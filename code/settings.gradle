@@ -1,1 +1,1 @@
-include ':app'
+include ':sample', ':retrofitext-compiler', ':retrofitext', ':retrofitext-annotation'
