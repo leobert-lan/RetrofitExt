@@ -42,9 +42,11 @@ public class FileDownloadDemo implements DemoSet.Demo<ResponseBody> {
     @Override
     public void startWithDebug(final IDebugDisplay iDebugDisplay) {
 
+        File file = new File(Environment
+                .getExternalStorageDirectory(),"robot.txt");
+
         newCallInstance()
-                .enqueue(new AsyncFileResponseHandler(Environment
-                        .getExternalStorageDirectory()) {
+                .enqueue(new AsyncFileResponseHandler(file) {
 
                     @Override
                     public void onProgress(Call<ResponseBody> call, long current, long total) {
@@ -57,9 +59,11 @@ public class FileDownloadDemo implements DemoSet.Demo<ResponseBody> {
                         iDebugDisplay.displayInfo(log);
                     }
 
+
+
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        super.onFailure(call, t);
+                    public void onThrow(Throwable t) {
+                        super.onThrow(t);
                         iDebugDisplay.displayInfo(DebugUtil.parseFailure(call,t));
                     }
 

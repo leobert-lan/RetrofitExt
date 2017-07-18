@@ -12,11 +12,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
+import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -27,32 +27,42 @@ import retrofit2.Response;
  * Created by leobert on 2017/6/19.
  */
 
-public abstract class AsyncFileResponseHandler implements Callback<ResponseBody> {
+public abstract class AsyncFileResponseHandler
+        extends ApiResponseHandler<ResponseBody> {
     private static final String LOG_TAG = "lmsg";
     protected final File file;
-    protected final boolean append;
     protected final boolean renameIfExists;
     protected File frontendFile;
 
-    private Call<ResponseBody> call;
+    protected Call<ResponseBody> call;
 
-    private MHandler mHandler = new MHandler() {
-        @Override
-        protected void onProgressChanged(long current, long total) {
-            if (current < total)
-                AsyncFileResponseHandler.this.onProgress(call, current, total);
-            else
-                AsyncFileResponseHandler.this.onResponse(call, frontendFile);
-        }
-    };
+    private interface OnProgressChangedListener {
+        void onProgressChanged(long current, long total);
+    }
 
-    private abstract static class MHandler extends Handler {
+    private final OnProgressChangedListener onProgressChangedListener =
+            new OnProgressChangedListener() {
+                @Override
+                public void onProgressChanged(long current, long total) {
+                    if (current < total)
+                        AsyncFileResponseHandler.this.onProgress(call, current, total);
+                    else
+                        AsyncFileResponseHandler.this.onResponse(call, frontendFile);
+                }
+            };
+
+    private MHandler mHandler = new MHandler(onProgressChangedListener);
+
+    private final static class MHandler extends Handler {
         public static final int WHAT_PROGRESS_CHANGE = 1;
         public static final String KEY_CURRENT = "k_c";
         public static final String KEY_TOTAL = "k_t";
 
-        public MHandler() {
+        private final WeakReference<OnProgressChangedListener> listenerRef;
+
+        public MHandler(OnProgressChangedListener onProgressChangedListener) {
             super(Looper.getMainLooper());
+            listenerRef = new WeakReference<>(onProgressChangedListener);
         }
 
         void send(long current, long total) {
@@ -74,7 +84,16 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
             }
         }
 
-        protected abstract void onProgressChanged(long current, long total);
+        private void onProgressChanged(long current, long total) {
+            if (listenerRef.get() != null) {
+                listenerRef.get().onProgressChanged(current, total);
+            }
+        }
+
+        public void release() {
+            if (listenerRef != null)
+                listenerRef.clear();
+        }
     }
 
     /**
@@ -86,37 +105,15 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
         this(file, false);
     }
 
-    /**
-     * Obtains new FileAsyncHttpResponseHandler and stores response in passed file
-     *
-     * @param file   File to store response within, must not be null
-     * @param append whether data should be appended to existing file
-     */
-    public AsyncFileResponseHandler(File file, boolean append) {
-        this(file, append, false);
-    }
 
     /**
      * Obtains new FileAsyncHttpResponseHandler and stores response in passed file
      *
      * @param file                     File to store response within, must not be null
-     * @param append                   whether data should be appended to existing file
      * @param renameTargetFileIfExists whether target file should be renamed if it already exists
      */
-    public AsyncFileResponseHandler(File file, boolean append, boolean renameTargetFileIfExists) {
-        this(file, append, renameTargetFileIfExists, false);
-    }
-
-
-    /**
-     * Obtains new FileAsyncHttpResponseHandler and stores response in passed file
-     *
-     * @param file                     File to store response within, must not be null
-     * @param append                   whether data should be appended to existing file
-     * @param renameTargetFileIfExists whether target file should be renamed if it already exists
-     * @param usePoolThread            Whether to use the pool's thread to fire callbacks
-     */
-    public AsyncFileResponseHandler(File file, boolean append, boolean renameTargetFileIfExists, boolean usePoolThread) {
+    public AsyncFileResponseHandler(File file, /*boolean append,*/
+                                    boolean renameTargetFileIfExists) {
         Utils.asserts(file != null, "File passed into FileAsyncHttpResponseHandler constructor must not be null");
         if (!file.isDirectory() && !file.getParentFile().isDirectory()) {
             Utils.asserts(file.getParentFile().mkdirs(), "Cannot create parent directories for requested File location");
@@ -126,8 +123,13 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
                 Log.d(LOG_TAG, "Cannot create directories for requested Directory location, might not be a problem");
             }
         }
+
+        if (file.isFile()&&file.exists()&&!renameTargetFileIfExists) {
+            file.delete();
+            file.getParentFile().mkdirs();
+        }
+
         this.file = file;
-        this.append = append;
         this.renameIfExists = renameTargetFileIfExists;
     }
 
@@ -138,7 +140,6 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
      */
     public AsyncFileResponseHandler(Context context) {
         this.file = getTemporaryFile(context);
-        this.append = false;
         this.renameIfExists = false;
     }
 
@@ -146,15 +147,43 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
         return call.request().url().url().toString();
     }
 
+//    @Override
+//    public final void onResponse(Call<ResponseBody> call,
+//                                 Response<ResponseBody> response) {
+//        this.call = call;
+//        if (response.isSuccessful()) {
+//            write(response);
+//            Log.d(LOG_TAG, "write started");
+//        } else {
+//            onFailure(response.code(), call);
+//        }
+//    }
+
+
     @Override
-    public final void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+    public void onCancel(Call<ResponseBody> call) {
         this.call = call;
-        if (response.isSuccessful()) {
-            write(response);
-            Log.d(LOG_TAG, "write started");
-        } else {
-            onFailure(response.code(), call);
-        }
+        mHandler.release();
+    }
+
+    @Override
+    public void onSuccess(int code, Call<ResponseBody> call, Headers headers,
+                          ResponseBody res) {
+        this.call = call;
+        write(res);
+        Log.d(LOG_TAG, "write started");
+
+    }
+
+    @Override
+    public void onFailure(int code, Call<ResponseBody> call, Headers headers, ResponseBody res) {
+        this.call = call;
+        onFailure(code, call);
+    }
+
+    @Override
+    public void onFinish(Call<ResponseBody> call) {
+
     }
 
     public abstract void onProgress(Call<ResponseBody> call, long current, long total);
@@ -163,18 +192,17 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
 
     public abstract void onFailure(int code, Call<ResponseBody> call);
 
-    private void write(final Response<ResponseBody> response) {
+    private void write(final ResponseBody responseBody) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    InputStream is = response.body().byteStream();
-                    long contentLength = response.body().contentLength();
+                    InputStream is = responseBody.byteStream();
+                    long contentLength = responseBody.contentLength();
                     File file = getTargetFile(getUrl(call));
                     Log.d(LOG_TAG, "write to:" + file.getAbsolutePath());
                     FileOutputStream fos =
-                            new FileOutputStream(file,
-                                    AsyncFileResponseHandler.this.append);
+                            new FileOutputStream(file, false);
                     BufferedInputStream bis = new BufferedInputStream(is);
                     byte[] buffer = new byte[1024];
                     int len;
@@ -201,12 +229,6 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
         Log.i(LOG_TAG, "current: " + current + "byte in " + contentLength);
         mHandler.send(current, contentLength);
     }
-
-    @Override
-    public void onFailure(Call<ResponseBody> call, Throwable t) {
-        this.call = call;
-    }
-
 
     /**
      * Attempts to delete file with stored response
@@ -255,7 +277,8 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
      */
     public File getTargetFile(String url) {
         if (frontendFile == null) {
-            frontendFile = getOriginalFile().isDirectory() ? getTargetFileByParsingURL(url) : getOriginalFile();
+            frontendFile = getOriginalFile().isDirectory() ? getTargetFileByParsingURL(url)
+                    : getOriginalFile();
         }
         return frontendFile;
     }
@@ -291,60 +314,5 @@ public abstract class AsyncFileResponseHandler implements Callback<ResponseBody>
         }
         return targetFileRtn;
     }
-
-//    @Override
-//    public final void onFailure(int statusCode, Header[] headers, byte[] responseBytes, Throwable throwable) {
-//        onFailure(statusCode, headers, throwable, getTargetFile());
-//    }
-
-//    /**
-//     * Method to be overriden, receives as much of file as possible Called when the file is
-//     * considered failure or if there is error when retrieving file
-//     *
-//     * @param statusCode http file status line
-//     * @param headers    file http headers if any
-//     * @param throwable  returned throwable
-//     * @param file       file in which the file is stored
-//     */
-//    public abstract void onFailure(int statusCode, Header[] headers, Throwable throwable, File file);
-
-//    @Override
-//    public final void onSuccess(int statusCode, Header[] headers, byte[] responseBytes) {
-//        onSuccess(statusCode, headers, getTargetFile());
-//    }
-
-//    /**
-//     * Method to be overriden, receives as much of response as possible
-//     *
-//     * @param statusCode http response status line
-//     * @param headers    response http headers if any
-//     * @param file       file in which the response is stored
-//     */
-//    public abstract void onSuccess(int statusCode, Header[] headers, File file);
-
-//    protected byte[] getResponseData(HttpEntity entity) throws IOException {
-//        if (entity != null) {
-//            InputStream instream = entity.getContent();
-//            long contentLength = entity.getContentLength();
-//            FileOutputStream buffer = new FileOutputStream(getTargetFile(), this.append);
-//            if (instream != null) {
-//                try {
-//                    byte[] tmp = new byte[BUFFER_SIZE];
-//                    int l, count = 0;
-//                    // do not send messages if request has been cancelled
-//                    while ((l = instream.read(tmp)) != -1 && !Thread.currentThread().isInterrupted()) {
-//                        count += l;
-//                        buffer.write(tmp, 0, l);
-//                        sendProgressMessage(count, contentLength);
-//                    }
-//                } finally {
-//                    instream.close();
-//                    buffer.flush();
-//                    buffer.close();
-//                }
-//            }
-//        }
-//        return null;
-//    }
 
 }
