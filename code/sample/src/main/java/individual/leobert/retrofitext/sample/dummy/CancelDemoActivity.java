@@ -1,5 +1,31 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 leobert-lan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package individual.leobert.retrofitext.sample.dummy;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,16 +34,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import individual.leobert.retrofitext.core.ApiResponseHandler;
 import individual.leobert.retrofitext.core.RequestManager;
 import individual.leobert.retrofitext.sample.ApiClient;
 import individual.leobert.retrofitext.sample.DebugUtil;
 import individual.leobert.retrofitext.sample.R;
-import individual.leobert.retrofitext.core.ApiResponseHandler;
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
-public class CancelDemoActivity extends AppCompatActivity implements IDebugDisplay {
+public class CancelDemoActivity extends AppCompatActivity implements ViewInterface {
     private TextView detail;
 
     private Button btnStart;
@@ -49,14 +75,14 @@ public class CancelDemoActivity extends AppCompatActivity implements IDebugDispl
         findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                call.cancel();
+//                process.cancel();
                 RequestManager.getInstance().cancelAll(impl);
             }
         });
     }
 
     private void startCall() {
-//        call = ApiClient.getInstance()
+//        process = ApiClient.getInstance()
 //                .apiInstance(SampleServer.class)
 //                .getDelay(3);
 
@@ -66,26 +92,26 @@ public class CancelDemoActivity extends AppCompatActivity implements IDebugDispl
             @Override
             public void onSuccess(int code, Call<ResponseBody> call,
                                   Headers headers, ResponseBody res) {
-                displayInfo(DebugUtil.debug(code, call, headers, res));
+                outputLogInfo(DebugUtil.debug(code, call, headers, res));
             }
 
             @Override
             public void onFailure(int code, Call<ResponseBody> call,
                                   Headers headers, ResponseBody res) {
-                displayInfo(DebugUtil.debug(code, call, headers, res));
+                outputLogInfo(DebugUtil.debug(code, call, headers, res));
             }
 
             @Override
             public void onCancel(Call<ResponseBody> call) {
                 super.onCancel(call);
-                displayInfo("canceled");
+                outputLogInfo("canceled");
                 Log.d("lmsg", "canceled" + CancelDemoActivity.this);
             }
 
             @Override
             public void onFinish(Call<ResponseBody> call) {
-                Log.i("lmsg", "on call finish"+ CancelDemoActivity.this);
-                CancelDemoActivity.this.onFinish();
+                Log.i("lmsg", "on process finish"+ CancelDemoActivity.this);
+                CancelDemoActivity.this.onCallFinish();
             }
 
         });
@@ -95,9 +121,9 @@ public class CancelDemoActivity extends AppCompatActivity implements IDebugDispl
     @Override
     public void finish() {
         super.finish();
-//        if (call != null && !call.isCanceled()) {
-//            call.cancel();
-//            Log.d("lmsg", "call cancel on finish");
+//        if (process != null && !process.isCanceled()) {
+//            process.cancel();
+//            Log.d("lmsg", "process cancel on finish");
 //        }
     }
 
@@ -130,13 +156,14 @@ public class CancelDemoActivity extends AppCompatActivity implements IDebugDispl
 
 
     @Override
-    public void displayInfo(CharSequence info) {
+    public void outputLogInfo(CharSequence info) {
 //        cancelWait();
         detail.setText(info);
     }
 
     @Override
-    public void onFinish() {
+    public void onCallFinish() {
         cancelWait();
     }
+
 }

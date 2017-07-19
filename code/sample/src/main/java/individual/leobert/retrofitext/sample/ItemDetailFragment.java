@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 leobert-lan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package individual.leobert.retrofitext.sample;
 
 import android.app.Activity;
@@ -12,10 +37,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import individual.leobert.retrofitext.sample.dummy.DemoSet;
-import individual.leobert.retrofitext.sample.dummy.IDebugDisplay;
+import individual.leobert.retrofitext.sample.dummy.ViewInterface;
 
 
-public class ItemDetailFragment extends Fragment implements IDebugDisplay {
+public class ItemDetailFragment extends Fragment implements ViewInterface {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -63,7 +88,6 @@ public class ItemDetailFragment extends Fragment implements IDebugDisplay {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_detail, container, false);
 
-        progressDialog = new ProgressDialog(getActivity());
 
         // Show the dummy content as text in a TextView.
         if (mDemo != null) {
@@ -72,8 +96,7 @@ public class ItemDetailFragment extends Fragment implements IDebugDisplay {
             btnTest.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    progressDialog.show();
-                    mDemo.startWithDebug(ItemDetailFragment.this);
+                    activeDemo();
                 }
             });
         }
@@ -81,7 +104,22 @@ public class ItemDetailFragment extends Fragment implements IDebugDisplay {
         return rootView;
     }
 
-    private void cancelWait() {
+    private void activeDemo() {
+        if (progressDialog == null) {
+            DemoSet.ProgressStyle progressStyle = mDemo.getProgressStyle();
+
+            progressDialog = ProgressDialog.show(getActivity(),
+                    progressStyle.title,
+                    progressStyle.message,
+                    progressStyle.indeterminate,
+                    progressStyle.cancelable,
+                    progressStyle.cancelListener);
+        } else
+            progressDialog.show();
+        mDemo.startWithDebug(ItemDetailFragment.this);
+    }
+
+    private void removeProgress() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -89,12 +127,12 @@ public class ItemDetailFragment extends Fragment implements IDebugDisplay {
 
 
     @Override
-    public void displayInfo(CharSequence info) {
+    public void outputLogInfo(CharSequence info) {
         detail.setText(info);
     }
 
     @Override
-    public void onFinish() {
-        cancelWait();
+    public void onCallFinish() {
+        removeProgress();
     }
 }

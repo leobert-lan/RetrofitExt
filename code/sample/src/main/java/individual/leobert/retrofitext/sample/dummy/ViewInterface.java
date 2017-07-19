@@ -23,28 +23,18 @@
  *
  */
 
-package individual.leobert.retrofitext.coverter;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Converter;
+package individual.leobert.retrofitext.sample.dummy;
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.sample.coverter </p>
- * <p><b>Project:</b> PermissionDemo </p>
- * <p><b>Classname:</b> StringResponseBodyConverter </p>
- * <p><b>Description:</b> TODO </p>
- * Created by leobert on 2017/6/21.
+ * <p><b>Package</b>
+ * <p><b>Project</b>
+ * <p><b>Classname</b>
+ * <p><b>Description</b>: TODO
+ * <p>
+ * Created by leobert on 2017/7/18.
  */
+public interface ViewInterface {
+    void outputLogInfo(CharSequence info);
 
-class StringResponseBodyConverter implements Converter<ResponseBody, String> {
-    @Override
-    public String convert(ResponseBody value) throws IOException {
-        try {
-            return value.string();
-        } finally {
-            value.close();
-        }
-    }
+    void onCallFinish();
 }

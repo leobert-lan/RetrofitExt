@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 leobert-lan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package individual.leobert.retrofitext.core;
 
 import okhttp3.Headers;
@@ -28,7 +53,7 @@ public abstract class ApiResponseHandler<T> implements Callback<T> {
     /**
      * to handle response in 200+
      * @param code 200+ serial codes
-     * @param call the original call
+     * @param call the original process
      * @param headers response headers
      * @param res response body
      */
@@ -37,7 +62,7 @@ public abstract class ApiResponseHandler<T> implements Callback<T> {
     /**
      * to handle response in 400+&500+
      * @param code 200+ serial codes
-     * @param call the original call
+     * @param call the original process
      * @param headers response headers
      * @param res response body
      */
@@ -52,7 +77,7 @@ public abstract class ApiResponseHandler<T> implements Callback<T> {
     /**
      * Fired in all cases when the request is finished, override to
      * handle in your own code,best for remove the waiting signal
-     * better set call to null to prepare gc in RequestManager
+     * better set process to null to prepare gc in RequestManager
      */
     public abstract void onFinish(Call<T> call);
 

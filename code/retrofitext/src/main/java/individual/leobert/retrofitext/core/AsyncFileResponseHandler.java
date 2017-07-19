@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2017 leobert-lan
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package individual.leobert.retrofitext.core;
 
 import android.content.Context;
@@ -148,14 +173,14 @@ public abstract class AsyncFileResponseHandler
     }
 
 //    @Override
-//    public final void onResponse(Call<ResponseBody> call,
+//    public final void onResponse(Call<ResponseBody> process,
 //                                 Response<ResponseBody> response) {
-//        this.call = call;
+//        this.process = process;
 //        if (response.isSuccessful()) {
 //            write(response);
 //            Log.d(LOG_TAG, "write started");
 //        } else {
-//            onFailure(response.code(), call);
+//            onFailure(response.code(), process);
 //        }
 //    }
 
@@ -237,7 +262,7 @@ public abstract class AsyncFileResponseHandler
      */
     public boolean deleteTargetFile() {
         if (call == null) {
-            Log.d(LOG_TAG, "no call to download,no file created,so no need to delete ");
+            Log.d(LOG_TAG, "no process to download,no file created,so no need to delete ");
             return false;
         }
         String url = call.request().url().url().toString();
