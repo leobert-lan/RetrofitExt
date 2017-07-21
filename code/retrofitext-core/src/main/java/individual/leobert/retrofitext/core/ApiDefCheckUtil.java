@@ -23,12 +23,21 @@
  *
  */
 
-apply plugin: 'java'
+package individual.leobert.retrofitext.core;
 
-dependencies {
-//    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly depext.retrofit;
+import java.lang.annotation.Annotation;
+
+/**
+ * <p><b>Package:</b> individual.leobert.retrofitext.core</p>
+ * <p><b>Project:</b> PermissionDemo </p>
+ * <p><b>Classname:</b> ApiDefCheckUtil </p>
+ * <p><b>Description:</b> Apply for checking declaration of {@link ApiDef} annotation </p>
+ * Created by leobert on 2017/6/16.
+ */
+
+public class ApiDefCheckUtil {
+    public static boolean isAllowedApi(Class clazz) {
+        Annotation apiDef = clazz.getAnnotation(ApiDef.class);
+        return apiDef != null;
+    }
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"

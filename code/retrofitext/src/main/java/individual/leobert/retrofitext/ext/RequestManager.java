@@ -23,7 +23,7 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
+package individual.leobert.retrofitext.ext;
 
 import android.content.Context;
 import android.os.Handler;
@@ -38,13 +38,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import individual.leobert.retrofitext.core.Cancelable;
 import retrofit2.Call;
 
 /**
  * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> RequsetManager </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Apply for manage the record of Calls, supply methods to manage
+ * the call via the holder Context、Fragment、v4.Fragment</p>
  * Created by leobert on 2017/6/20.
  */
 

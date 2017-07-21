@@ -44,6 +44,15 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter {
+            url "http://jcenter.bintray.com/"
+        }
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -56,10 +65,16 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
-    compile project(':retrofitext')
+//    compile project(':retrofitext')
+    compile 'individual.leobert.libs:retrofitext:1.0.1'
+    compile 'individual.leobert.libs:retrofitext-core:1.0.1'
+
+//    compile project (':retrofitext-core')
 
 
-    annotationProcessor project(':retrofitext-compiler')
+//    annotationProcessor project(':retrofitext-compiler')
+
+    annotationProcessor 'individual.leobert.libs:retrofitext-compiler:1.0.1'
 
     compile depext.retrofit
 }

@@ -31,10 +31,15 @@ import retrofit2.Call;
  * <p><b>Package:</b> individual.leobert.retrofitext.core </p>
  * <p><b>Project:</b> code </p>
  * <p><b>Classname:</b> Cancelable </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Interface for life-cycle management,auto implemented </p>
  * Created by leobert on 2017/7/17.
  */
 
 public interface Cancelable {
+    /**
+     * cancel all calls declared at the retrofit-api-interface,except the excludes.
+     *
+     * @param excludes the instances to escape
+     */
     void cancelAll(Call... excludes);
 }

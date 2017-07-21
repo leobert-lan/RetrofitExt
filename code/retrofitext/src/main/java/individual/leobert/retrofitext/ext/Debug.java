@@ -23,23 +23,26 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+package individual.leobert.retrofitext.ext;
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
- * <p><b>Project:</b> PermissionDemo </p>
- * <p><b>Classname:</b> ApiDef </p>
+ * <p><b>Package:</b> individual.leobert.retrofitext.ext </p>
+ * <p><b>Project:</b> code </p>
+ * <p><b>Classname:</b> Debug </p>
  * <p><b>Description:</b> TODO </p>
- * Created by leobert on 2017/6/16.
+ * Created by leobert on 2017/7/17.
  */
-@Retention(RUNTIME)
-@Target({TYPE})
-public @interface ApiDef {
+
+public class Debug {
+    private Debug() {
+        throw new AssertionError("not allowed");
+    }
+    public static void setDebugEnable(boolean isDebugEnable) {
+        DebugHandler.setDebugEnable(isDebugEnable);
+    }
+
+    public static void enableDebug(String tag) {
+        DebugHandler.enableDebug(tag);
+    }
 
 }

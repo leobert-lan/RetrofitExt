@@ -23,7 +23,7 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
+package individual.leobert.retrofitext.ext;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -45,16 +45,16 @@ import retrofit2.Call;
 
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
+ * <p><b>Package:</b> individual.leobert.retrofitext.ext</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> AsyncFileResponseHandler </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Apply for downloading files </p>
  * Created by leobert on 2017/6/19.
  */
 
 public abstract class AsyncFileResponseHandler
         extends ApiResponseHandler<ResponseBody> {
-    private static final String LOG_TAG = "lmsg";
+    private static final String LOG_TAG = AsyncFileResponseHandler.class.getSimpleName();
     protected final File file;
     protected final boolean renameIfExists;
     protected File frontendFile;
@@ -171,18 +171,6 @@ public abstract class AsyncFileResponseHandler
     private String getUrl(Call call) {
         return call.request().url().url().toString();
     }
-
-//    @Override
-//    public final void onResponse(Call<ResponseBody> process,
-//                                 Response<ResponseBody> response) {
-//        this.process = process;
-//        if (response.isSuccessful()) {
-//            write(response);
-//            Log.d(LOG_TAG, "write started");
-//        } else {
-//            onFailure(response.code(), process);
-//        }
-//    }
 
 
     @Override

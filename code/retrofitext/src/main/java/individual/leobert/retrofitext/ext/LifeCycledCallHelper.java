@@ -23,17 +23,17 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
+package individual.leobert.retrofitext.ext;
 
 import android.content.Context;
 
 import retrofit2.Call;
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
+ * <p><b>Package:</b> individual.leobert.retrofitext.ext</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> ApiModel </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> helper for making life-cycled retrofit call </p>
  * Created by leobert on 2017/6/21.
  */
 

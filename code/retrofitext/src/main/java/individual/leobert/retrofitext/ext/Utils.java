@@ -23,23 +23,13 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
-
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Random;
+package individual.leobert.retrofitext.ext;
 
 /**
  * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> Utils </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> utils </p>
  * Created by leobert on 2017/6/19.
  */
 
@@ -62,13 +52,13 @@ import java.util.Random;
         }
     }
 
-    /**
-     * Will throw IllegalArgumentException if provided object is null on runtime
-     *
-     * @param argument object that should be asserted as not null
-     * @param name     name of the object asserted
-     * @throws IllegalArgumentException
-     */
+//    /**
+//     * Will throw IllegalArgumentException if provided object is null on runtime
+//     *
+//     * @param argument object that should be asserted as not null
+//     * @param name     name of the object asserted
+//     * @throws IllegalArgumentException
+//     */
 //    static <T> T notNull(final T argument, final String name) {
 //        if (argument == null) {
 //            throw new IllegalArgumentException(name + " should not be null!");

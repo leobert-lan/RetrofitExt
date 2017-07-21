@@ -29,19 +29,22 @@ import android.content.Context;
 
 import java.lang.reflect.Constructor;
 
-import individual.leobert.retrofitext.core.ApiResponseHandler;
-import individual.leobert.retrofitext.core.LifeCycledCallHelper;
+import individual.leobert.retrofitext.ext.ApiResponseHandler;
+import individual.leobert.retrofitext.ext.LifeCycledCallHelper;
 import retrofit2.Call;
 
 /**
  * <p><b>Package:</b> individual.leobert.retrofitext </p>
  * <p><b>Project:</b> code </p>
  * <p><b>Classname:</b> RetrofitProxy </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> 入口 </p>
  * Created by leobert on 2017/7/17.
  */
 
 public class RetrofitExt {
+
+    private RetrofitExt() {
+    }
 
     private static LifeCycledCallHelper lifeCycledCallHelper = LifeCycledCallHelper.getInstance();
 
@@ -81,19 +84,19 @@ public class RetrofitExt {
                 + ". Did you forget to add @ApiDef?");
     }
 
-    public final <T> void lifeCycledWithContext(Context context, Call<T> call,
-                                   ApiResponseHandler<T> responseHandler) {
-        lifeCycledCallHelper.process(context,call,responseHandler);
+    public static final <T> void lifeCycledWithContext(Context context, Call<T> call,
+                                                       ApiResponseHandler<T> responseHandler) {
+        lifeCycledCallHelper.process(context, call, responseHandler);
     }
 
-    public final <T> void lifeCycledWithFragment(android.app.Fragment fragment, Call<T> call,
-                                   ApiResponseHandler<T> responseHandler) {
-        lifeCycledCallHelper.process(fragment,call,responseHandler);
+    public static final <T> void lifeCycledWithFragment(android.app.Fragment fragment, Call<T> call,
+                                                        ApiResponseHandler<T> responseHandler) {
+        lifeCycledCallHelper.process(fragment, call, responseHandler);
     }
 
-    public final <T> void lifeCycledWithFragmentV4(android.support.v4.app.Fragment fragment,
-                                   Call<T> call,
-                                   ApiResponseHandler<T> responseHandler) {
-        lifeCycledCallHelper.process(fragment,call,responseHandler);
+    public static final <T> void lifeCycledWithFragmentV4(android.support.v4.app.Fragment fragment,
+                                                          Call<T> call,
+                                                          ApiResponseHandler<T> responseHandler) {
+        lifeCycledCallHelper.process(fragment, call, responseHandler);
     }
 }

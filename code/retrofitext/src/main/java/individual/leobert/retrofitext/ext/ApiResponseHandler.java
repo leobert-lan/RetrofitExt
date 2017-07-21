@@ -23,7 +23,7 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
+package individual.leobert.retrofitext.ext;
 
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
@@ -32,10 +32,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
+ * <p><b>Package:</b> individual.leobert.retrofitext.ext</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> ApiResponseHandler </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> abstract class to handle responses of Retrofit call.</p>
+ * <li>implement and handle 200+: onSuccess {@link #onSuccess(int, Call, Headers, Object)}</li>
+ * <li>implement and handle 400+&500+ types: onFailure {@link #onFailure(int, Call, Headers, ResponseBody)}</li>
+ * <li>implement and handle "finish" signal: onFinish {@link #onFinish(Call)}</li>
+ * </br>
+ * <p>other listeners:</p>
+ * <li>listen cancel: override onCancel {@link #onCancel(Call)}</li>
+ * <li>listen throw: override onThrow {@link #onThrow(Throwable)}</li>
+ *
  * Created by leobert on 2017/6/20.
  */
 
@@ -43,28 +51,30 @@ public abstract class ApiResponseHandler<T> implements Callback<T> {
     @Override
     public final void onResponse(Call<T> call, Response<T> response) {
         if (response.isSuccessful()) {
-            onSuccess(response.code(),call,response.headers(),response.body());
+            onSuccess(response.code(), call, response.headers(), response.body());
         } else {
-            onFailure(response.code(),call,response.headers(),response.errorBody());
+            onFailure(response.code(), call, response.headers(), response.errorBody());
         }
         onFinish(call);
     }
 
     /**
      * to handle response in 200+
-     * @param code 200+ serial codes
-     * @param call the original process
+     *
+     * @param code    200+ serial codes
+     * @param call    the original process
      * @param headers response headers
-     * @param res response body
+     * @param res     response body
      */
     public abstract void onSuccess(int code, Call<T> call, Headers headers, T res);
 
     /**
      * to handle response in 400+&500+
-     * @param code 200+ serial codes
-     * @param call the original process
+     *
+     * @param code    200+ serial codes
+     * @param call    the original process
      * @param headers response headers
-     * @param res response body
+     * @param res     response body
      */
     public abstract void onFailure(int code, Call<T> call, Headers headers, ResponseBody res);
 
@@ -77,7 +87,6 @@ public abstract class ApiResponseHandler<T> implements Callback<T> {
     /**
      * Fired in all cases when the request is finished, override to
      * handle in your own code,best for remove the waiting signal
-     * better set process to null to prepare gc in RequestManager
      */
     public abstract void onFinish(Call<T> call);
 

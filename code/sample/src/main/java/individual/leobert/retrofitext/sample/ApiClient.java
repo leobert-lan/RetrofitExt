@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 import individual.leobert.retrofitext.RetrofitExt;
 import individual.leobert.retrofitext.core.ApiDefCheckUtil;
-import individual.leobert.retrofitext.core.RequestManager;
+import individual.leobert.retrofitext.ext.RequestManager;
 import individual.leobert.retrofitext.coverter.FastJsonConverterFactory;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -63,7 +63,7 @@ public class ApiClient {
 
     public static void setLogEnable(boolean isLogEnable) {
         ApiClient.isLogEnable = isLogEnable;
-        individual.leobert.retrofitext.core.Debug.setDebugEnable(isLogEnable);
+        individual.leobert.retrofitext.ext.Debug.setDebugEnable(isLogEnable);
     }
 
     private Retrofit retrofit = null;

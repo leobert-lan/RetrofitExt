@@ -23,7 +23,7 @@
  *
  */
 
-package individual.leobert.retrofitext.core;
+package individual.leobert.retrofitext.ext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +33,11 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 /**
- * <p><b>Package:</b> individual.leobert.retrofitext.core.</p>
+ * <p><b>Package:</b> individual.leobert.retrofitext.ext</p>
  * <p><b>Project:</b> PermissionDemo </p>
  * <p><b>Classname:</b> CallbackComposite </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Apply to composite {@link ApiResponseHandler},auto manage the records
+ * of calls</p>
  * Created by leobert on 2017/6/21.
  */
 
@@ -56,14 +57,22 @@ import retrofit2.Call;
     @Override
     public void onSuccess(int code, Call<T> call, Headers headers, T res) {
         for (ApiResponseHandler<T> callback : callbacks) {
-            callback.onSuccess(code, call, headers, res);
+            try {
+                callback.onSuccess(code, call, headers, res);
+            } catch (Exception e) {
+                callback.onThrow(e);
+            }
         }
     }
 
     @Override
     public void onFailure(int code, Call<T> call, Headers headers, ResponseBody res) {
         for (ApiResponseHandler<T> callback : callbacks) {
-            callback.onFailure(code, call, headers, res);
+            try {
+                callback.onFailure(code, call, headers, res);
+            } catch (Exception e) {
+                callback.onThrow(e);
+            }
         }
     }
 

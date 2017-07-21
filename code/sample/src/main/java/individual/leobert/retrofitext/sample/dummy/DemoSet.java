@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import individual.leobert.retrofitext.core.LifeCycledCallHelper;
+import individual.leobert.retrofitext.ext.LifeCycledCallHelper;
 import individual.leobert.retrofitext.sample.dummy.demos.CancelDemo;
 import individual.leobert.retrofitext.sample.dummy.demos.DeleteDemo;
 import individual.leobert.retrofitext.sample.dummy.demos.FileDownloadDemo;

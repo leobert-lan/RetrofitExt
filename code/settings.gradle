@@ -23,4 +23,4 @@
  *
  */
 
-include ':sample', ':retrofitext-compiler', ':retrofitext', ':retrofitext-annotation'
+include ':sample', ':retrofitext-compiler', ':retrofitext', ':retrofitext-core'

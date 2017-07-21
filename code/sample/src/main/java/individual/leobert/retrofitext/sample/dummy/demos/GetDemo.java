@@ -30,7 +30,7 @@ import android.support.v4.app.Fragment;
 
 import individual.leobert.retrofitext.sample.ApiClient;
 import individual.leobert.retrofitext.sample.DebugUtil;
-import individual.leobert.retrofitext.core.ApiResponseHandler;
+import individual.leobert.retrofitext.ext.ApiResponseHandler;
 import individual.leobert.retrofitext.sample.dummy.DemoSet;
 import individual.leobert.retrofitext.sample.dummy.ViewInterface;
 import individual.leobert.retrofitext.sample.dummy.SampleServer;
