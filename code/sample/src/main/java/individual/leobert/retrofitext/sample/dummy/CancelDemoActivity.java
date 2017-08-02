@@ -34,8 +34,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import individual.leobert.retrofitext.core.ApiResponseHandler;
-import individual.leobert.retrofitext.core.RequestManager;
+import individual.leobert.retrofitext.ext.ApiResponseHandler;
+import individual.leobert.retrofitext.ext.RequestManager;
 import individual.leobert.retrofitext.sample.ApiClient;
 import individual.leobert.retrofitext.sample.DebugUtil;
 import individual.leobert.retrofitext.sample.R;

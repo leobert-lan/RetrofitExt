@@ -66,9 +66,7 @@ import retrofit2.Call;
 
 /**
  * Description: Processor for RetrofitLifecycle to generate proxy class
- * Created by Andy on 2017/7/4
  */
-
 @AutoService(Processor.class)
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class RetrofitProcessor extends AbstractProcessor {

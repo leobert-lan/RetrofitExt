@@ -32,7 +32,7 @@ import java.io.File;
 
 import individual.leobert.retrofitext.sample.ApiClient;
 import individual.leobert.retrofitext.sample.DebugUtil;
-import individual.leobert.retrofitext.core.AsyncFileResponseHandler;
+import individual.leobert.retrofitext.ext.AsyncFileResponseHandler;
 import individual.leobert.retrofitext.sample.dummy.DemoSet;
 import individual.leobert.retrofitext.sample.dummy.ViewInterface;
 import individual.leobert.retrofitext.sample.dummy.SampleServer;

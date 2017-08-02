@@ -38,9 +38,7 @@ import javax.lang.model.type.TypeMirror;
 
 /**
  * Description: Helper class to record method info needed by Processor
- * Created by Andy on 2017/7/4
  */
-
 public class MethodInfo {
     private String methodName;
     private List<Modifier> methodModifiers;
