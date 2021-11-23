@@ -94,7 +94,7 @@ public class RetrofitExt {
         lifeCycledCallHelper.process(fragment, call, responseHandler);
     }
 
-    public static final <T> void lifeCycledWithFragmentV4(android.support.v4.app.Fragment fragment,
+    public static final <T> void lifeCycledWithFragmentV4(androidx.fragment.app.Fragment fragment,
                                                           Call<T> call,
                                                           ApiResponseHandler<T> responseHandler) {
         lifeCycledCallHelper.process(fragment, call, responseHandler);

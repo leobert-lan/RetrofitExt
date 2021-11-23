@@ -26,7 +26,7 @@
 package individual.leobert.retrofitext.sample.dummy.demos;
 
 import android.os.Environment;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 

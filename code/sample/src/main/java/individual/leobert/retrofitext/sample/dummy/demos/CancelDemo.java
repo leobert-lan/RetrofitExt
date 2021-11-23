@@ -27,8 +27,8 @@ package individual.leobert.retrofitext.sample.dummy.demos;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import individual.leobert.retrofitext.ext.ApiResponseHandler;
 import individual.leobert.retrofitext.sample.ApiClient;

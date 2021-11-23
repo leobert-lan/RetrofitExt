@@ -27,7 +27,7 @@ package individual.leobert.retrofitext.sample;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -91,11 +91,11 @@ public class ApiClient {
     }
 
     public <T> T apiInstance(Class<T> remoteApiClazz) {
-        if (!ApiDefCheckUtil.isAllowedApi(remoteApiClazz))
+        if (!ApiDefCheckUtil.isAllowedApi(remoteApiClazz)) {
             throw new IllegalArgumentException("must give a interface with @apiDef annotation");
+        }
 //        T api = retrofit.create(remoteApiClazz);
-        T proxyApi = RetrofitExt.getProxyInterface(remoteApiClazz, getImpl(remoteApiClazz));
-        return proxyApi;
+        return RetrofitExt.getProxyInterface(remoteApiClazz, getImpl(remoteApiClazz));
     }
 
     private <T> T getImpl(Class<T> remoteApiClazz) {
@@ -140,7 +140,7 @@ public class ApiClient {
         RequestManager.getInstance().cancel(fragment);
     }
 
-    public static void cancel(android.support.v4.app.Fragment fragment) {
+    public static void cancel(androidx.fragment.app.Fragment fragment) {
         RequestManager.getInstance().cancel(fragment);
     }
 

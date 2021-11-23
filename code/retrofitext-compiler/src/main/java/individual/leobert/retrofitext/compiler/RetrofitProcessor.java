@@ -75,9 +75,9 @@ public class RetrofitProcessor extends AbstractProcessor {
     private Messager mMessager;
     private Filer mFiler;
 
-    private String mInterfaceImplFieldName = "mInterfaceImpl";
-    private String mCallListFieldName = "mCallList";
-    private String mGeneratedClassSuffix = "InvokeProxy";
+    private static final String mInterfaceImplFieldName = "mInterfaceImpl";
+    private static final String mCallListFieldName = "mCallList";
+    private static final String mGeneratedClassSuffix = "InvokeProxy";
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {

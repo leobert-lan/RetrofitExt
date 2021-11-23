@@ -36,7 +36,7 @@ import java.lang.annotation.Annotation;
  */
 
 public class ApiDefCheckUtil {
-    public static boolean isAllowedApi(Class clazz) {
+    public static <T> boolean isAllowedApi(Class<T> clazz) {
         Annotation apiDef = clazz.getAnnotation(ApiDef.class);
         return apiDef != null;
     }

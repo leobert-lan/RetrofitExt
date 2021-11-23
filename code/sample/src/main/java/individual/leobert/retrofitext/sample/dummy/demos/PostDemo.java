@@ -25,7 +25,7 @@
 
 package individual.leobert.retrofitext.sample.dummy.demos;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import individual.leobert.retrofitext.sample.ApiClient;

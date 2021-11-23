@@ -1,12 +1,12 @@
 apply plugin: 'java'
 
 dependencies {
-//    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'individual.leobert.libs:retrofitext-core:1.0.1'
-//    compile project(':retrofitext-core')
-    compile depext.javapoet
-    compileOnly depext.auto
-    compileOnly depext.retrofit
+//    implementation 'individual.leobert.libs:retrofitext-core:1.0.1'
+    implementation project(':retrofitext-core')
+    implementation depext.javapoet
+    annotationProcessor depext.auto
+    implementation depext.auto
+    implementation depext.retrofit
 }
 
 sourceCompatibility = "1.7"

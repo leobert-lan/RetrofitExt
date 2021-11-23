@@ -62,7 +62,7 @@ public final class LifeCycledCallHelper {
         enqueue(call, responseHandler);
     }
 
-    public final <T> void process(android.support.v4.app.Fragment fragment,
+    public final <T> void process(androidx.fragment.app.Fragment fragment,
                                   Call<T> call,
                                   ApiResponseHandler<T> responseHandler) {
         RequestManager.getInstance().add(fragment, call);

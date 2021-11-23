@@ -78,7 +78,7 @@ public class RequestManager {
         cancel(key);
     }
 
-    public synchronized void cancel(android.support.v4.app.Fragment fragment) {
+    public synchronized void cancel(androidx.fragment.app.Fragment fragment) {
         final String key = getKey(fragment);
         cancel(key);
     }
@@ -138,7 +138,7 @@ public class RequestManager {
         add(key,call);
     }
 
-    synchronized void add(android.support.v4.app.Fragment fragment, Call call) {
+    synchronized void add(androidx.fragment.app.Fragment fragment, Call call) {
         if (call == null)
             return;
         final String key = getKey(fragment);
@@ -187,10 +187,11 @@ public class RequestManager {
     }
 
     private <T> String getKey(T t) {
-        if (t != null)
+        if (t != null) {
             return t.toString();
-        else
+        } else {
             return "Null";
+        }
     }
 
 
