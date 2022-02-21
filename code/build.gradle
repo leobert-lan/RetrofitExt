@@ -45,6 +45,7 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         mavenCentral()
         jcenter {
             url "http://jcenter.bintray.com/"
